@@ -1,0 +1,48 @@
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 320px;
+  font-family: inherit;
+}
+
+.dropdown-label {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+.dropdown-select {
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border: 0.1rem solid var(--gray-400);
+  border-radius: 0.35rem;
+  color: var(--text-primary);
+  background-color: var(--bg-light);
+  box-shadow: rgba(14, 63, 126, 0.06) 0 0 0 0.0625rem,
+    rgba(42, 51, 70, 0.03) 0 0.0625rem 0.0625rem -0.0313rem,
+    rgba(42, 51, 70, 0.04) 0 0.125rem 0.125rem -0.0625rem;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease,
+    background-color 0.25s ease;
+  appearance: none; /* remove default arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg fill='var(--text-primary)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.dropdown-select:focus {
+  border-color: var(--color-mardi-gras);
+  box-shadow: 0 0 0 0.2rem rgba(138, 28, 124, 0.25);
+  background-color: var(--bg-light);
+}
+
+.dropdown-select:disabled {
+  background-color: var(--gray-100);
+  cursor: not-allowed;
+  color: var(--gray-600);
+}

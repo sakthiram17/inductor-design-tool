@@ -43,6 +43,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
           min={min}
           max={max}
           step={step}
+          value={value}
           onChange={handleChange}
           disabled={disabled}
           className="slider-input-range"
@@ -53,9 +54,15 @@ const SliderInput: React.FC<SliderInputProps> = ({
         {label && <label className="slider-input-label">{label}</label>}
         {showValue && <span className="slider-input-value">{value}</span>}
       </div>
-      {isTouched && validationFunction && !validationFunction(value) && (
-        <div className="slider-input-error">{errorMessage}</div>
-      )}
+      <div
+        className={`slider-input-error ${
+          isTouched && validationFunction && !validationFunction(value)
+            ? "show"
+            : ""
+        }`}
+      >
+        {errorMessage}
+      </div>
     </div>
   );
 };
