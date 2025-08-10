@@ -1,0 +1,75 @@
+/* SliderInput.css */
+
+.slider-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  justify-content: center;
+  height: 1rem;
+  align-items: center;
+}
+
+.slider-input-label {
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: bold;
+}
+
+.slider-input-range {
+  width: 100%;
+  accent-color: var(--color-mardi-gras);
+  height: 1rem;
+}
+
+.slider-input-range:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.slider-input-value {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 2px;
+  text-align: right;
+}
+
+.slider-input-range {
+  width: 100%;
+  height: 0.5rem;
+  background: var(--gray-500);
+  border-radius: 0.25rem;
+  outline: none;
+}
+
+.slider-input-range:hover {
+  opacity: 1;
+}
+
+.slider-min,
+.slider-max {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  width: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.slider-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.slider-input-error {
+  color: var(--error);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  font-weight: bold;;
+  text-align: center;
+}
+.slider-label-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
