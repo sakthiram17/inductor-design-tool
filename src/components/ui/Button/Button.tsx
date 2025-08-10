@@ -8,7 +8,7 @@ export const ButtonStyle = {
   Danger: "danger" as ButtonStyle,
 };
 
-interface ButtonProps {
+export interface ButtonProps {
   label: string;
   onClick?: () => void;
   styleType?: ButtonStyle;

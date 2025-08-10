@@ -1,13 +1,14 @@
 import { useState } from "react";
 import "./App.css";
-import Button from "./components/ui/Button/Button";
 import SliderInput from "./components/ui/Inputs/SliderInput";
 import TextInput from "./components/ui/Inputs/TextInput";
 import Dropdown from "./components/ui/Inputs/Dropdown";
+import Card from "./components/ui/Card/Card";
 
 function App() {
   const [name, setName] = useState("");
   const [fruit, setFruit] = useState("");
+  const [count, setCount] = useState(0);
 
   const options = [
     { value: "", label: "Select a fruit" },
@@ -25,7 +26,21 @@ function App() {
           gap: "20px",
         }}
       >
-        <SliderInput
+        <Card
+          header={<h2>Demo Card Header</h2>}
+    
+          primaryBtn={{
+            label: "Increment",
+            onClick: () => setCount(count + 1),
+            disabled: false,
+          }}
+          secondaryBtn={{
+            label: "Reset",
+            onClick: () => setCount(0),
+            disabled: count === 0,
+          }}
+        >
+              <SliderInput
           value={0.5}
           errorMessage="limit exceeded"
           validationFunction={() => true}
@@ -53,9 +68,7 @@ function App() {
           options={options}
           placeholder="Choose one..."
         />
-        <Button label="Get cores"></Button>
-        <Button label="Get cores" styleType="secondary"></Button>
-        <Button label="Get cores" styleType="danger"></Button>
+        </Card>
       </div>
     </>
   );
