@@ -1,10 +1,10 @@
 import "./App.css";
-import InductorDesignForm from "./components/InductorDesignForm";
+import InductorDesign from "./pages/InductorDesign";
 
 function App() {
   return (
     <>
-      <InductorDesignForm />
+      <InductorDesign />
     </>
   );
 }

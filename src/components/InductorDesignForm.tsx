@@ -1,18 +1,31 @@
-import { useState } from "react";
 import Card from "./ui/Card/Card";
 import TextInput from "./ui/Inputs/TextInput";
 import SliderInput from "./ui/Inputs/SliderInput";
 import Dropdown from "./ui/Inputs/Dropdown";
-import wiresList from "../common/Wires";
+import wiresList, { type Wire } from "../common/Wires";
 import "./InductorDesignForm.css";
+import { useInductorDesign } from "../Context/InductorDesignContext";
 
 const InductorDesignForm = () => {
-  const [inductance, setInductance] = useState("");
-  const [rmsCurrent, setRmsCurrent] = useState("");
-  const [peakCurrent, setPeakCurrent] = useState("");
-  const [projectTitle, setProjectTitle] = useState("");
-  const [windingFactor, setWindingFactor] = useState(0.2);
-  const [selectedWire, setSelectedWire] = useState("");
+  const {
+    inductance,
+    setInductance,
+    rmsCurrent,
+    setRmsCurrent,
+    peakCurrent,
+    setPeakCurrent,
+    projectTitle,
+    setProjectTitle,
+    windingFactor,
+    setWindingFactor,
+    selectedWire,
+    setSelectedWire,
+  } = useInductorDesign();
+
+  const mapSelectedWire = (wireName: string): Wire | undefined => {
+    return wiresList.find((w) => w.name === wireName);
+  };
+
   return (
     <div className="inductor-design-form">
       <Card
@@ -23,26 +36,26 @@ const InductorDesignForm = () => {
           <TextInput
             label="Inductance (H)"
             value={inductance}
-            onChange={(value: string) => setInductance(value)}
+            onChange={setInductance}
             errorMessage="Inductance cannot be empty"
             validationFunction={(value: string) => value.length > 0}
           />
           <TextInput
             label="RMS Current (A)"
             value={rmsCurrent}
-            onChange={(value: string) => setRmsCurrent(value)}
+            onChange={setRmsCurrent}
             errorMessage="RMS Current cannot be empty"
           />
           <TextInput
             label="Peak Current (A)"
             value={peakCurrent}
-            onChange={(value: string) => setPeakCurrent(value)}
+            onChange={setPeakCurrent}
             errorMessage="RMS Current cannot be empty"
           />
           <TextInput
             label="Project Title (Optional)"
             value={projectTitle}
-            onChange={(value: string) => setProjectTitle(value)}
+            onChange={setProjectTitle}
           />
         </div>
       </Card>
@@ -51,7 +64,7 @@ const InductorDesignForm = () => {
           <SliderInput
             label="Winding Factor"
             value={windingFactor}
-            onChange={(value: number) => setWindingFactor(value)}
+            onChange={setWindingFactor}
             min={0}
             max={1}
             showMinMax={true}
@@ -59,8 +72,10 @@ const InductorDesignForm = () => {
           />
           <Dropdown
             label="Select Wire"
-            value={selectedWire}
-            onChange={(value: string) => setSelectedWire(value)}
+            value={selectedWire?.name ?? ""}
+            onChange={(wire: string) => {
+              setSelectedWire(mapSelectedWire(wire) || wiresList[0]);
+            }}
             options={wiresList.map((wire) => ({
               value: wire.name,
               label: `${wire.name} : ${wire.Current} A`,
