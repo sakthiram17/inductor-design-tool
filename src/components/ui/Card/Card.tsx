@@ -1,6 +1,6 @@
 import React from "react";
 import Button, { ButtonStyle } from "../Button/Button";
-import "./Card.css"
+import "./Card.css";
 type ButtonProps = {
   label: string;
   onClick: () => void;
@@ -11,7 +11,7 @@ type CardProps = {
   header?: React.ReactNode;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  primaryBtn: ButtonProps;
+  primaryBtn?: ButtonProps;
   secondaryBtn?: ButtonProps;
   className?: string;
 };
@@ -27,9 +27,7 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div className={`card-primary ${className}`}>
       {header && <div className="card-header">{header}</div>}
-
       <div className="card-body">{children}</div>
-
       <div className="card-footer">
         <div className="card-buttons">
           {secondaryBtn && (
@@ -41,12 +39,14 @@ export const Card: React.FC<CardProps> = ({
             />
           )}
 
-          <Button
-            label={primaryBtn.label}
-            onClick={primaryBtn.onClick}
-            disabled={primaryBtn.disabled}
-            styleType={ButtonStyle.Primary}
-          />
+          {primaryBtn && (
+            <Button
+              label={primaryBtn.label}
+              onClick={primaryBtn.onClick}
+              disabled={primaryBtn.disabled}
+              styleType={ButtonStyle.Primary}
+            />
+          )}
         </div>
 
         {footer && <div className="card-footer-content">{footer}</div>}

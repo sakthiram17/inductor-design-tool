@@ -13,7 +13,7 @@
 }
 
 .card-header {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-mardi-gras);
 }
@@ -45,8 +45,7 @@
   flex: 1 1 auto;
   font-size: 0.9rem;
   color: var(--text-muted);
-  text-align: right;
-  min-width: 150px;
+  text-align: right;;
 }
 
 /* Responsive adjustments */
