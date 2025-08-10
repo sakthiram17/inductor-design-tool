@@ -1,13 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { Wire } from "../common/Wires";
-
-export type Core = {
-  SKU: string;
-  "Core Area": number;
-  "Window Area": number;
-  "Area Product": number;
-  "Mean Turn Length": number;
-};
+import type { Core } from "../common/CoreData";
 
 type InductorDesignContextType = {
   possibleCores: Core[];
@@ -24,6 +17,10 @@ type InductorDesignContextType = {
   setProjectTitle: (v: string) => void;
   windingFactor: number;
   setWindingFactor: (v: number) => void;
+  isValid?: boolean;
+  setIsValid?: (v: boolean) => void;
+  areaProduct?: number | undefined;
+  setAreaProduct?: (v: number | undefined) => void;
 };
 
 const InductorDesignContext = createContext<
@@ -42,6 +39,8 @@ export const InductorDesignProvider = ({
   const [peakCurrent, setPeakCurrent] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
   const [windingFactor, setWindingFactor] = useState(0.2);
+  const [areaProduct, setAreaProduct] = useState<number | undefined>(undefined);
+  const [isValid, setIsValid] = useState(false);
 
   return (
     <InductorDesignContext.Provider
@@ -60,6 +59,10 @@ export const InductorDesignProvider = ({
         setProjectTitle,
         windingFactor,
         setWindingFactor,
+        setIsValid,
+        isValid,
+        areaProduct,
+        setAreaProduct,
       }}
     >
       {children}
