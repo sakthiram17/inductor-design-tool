@@ -11,7 +11,7 @@ type SliderInputProps = {
   disabled?: boolean;
   showMinMax?: boolean;
   showValue?: boolean;
-  validationFunction?: (value: number) => boolean;
+  validationFunction?: (value: number) => string | null;
   errorMessage?: string;
 };
 
@@ -56,7 +56,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
       </div>
       <div
         className={`slider-input-error ${
-          isTouched && validationFunction && !validationFunction(value)
+          isTouched && validationFunction && validationFunction(value)
             ? "show"
             : ""
         }`}

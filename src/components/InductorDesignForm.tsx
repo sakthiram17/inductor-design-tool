@@ -5,6 +5,7 @@ import Dropdown from "./ui/Inputs/Dropdown";
 import wiresList, { type Wire } from "../common/Wires";
 import "./InductorDesignForm.css";
 import { useInductorDesign } from "../Context/InductorDesignContext";
+import { validator } from "../common/Validators";
 
 const InductorDesignForm = () => {
   const {
@@ -29,37 +30,43 @@ const InductorDesignForm = () => {
   return (
     <div className="inductor-design-form">
       <Card
-        header={<h2>Choose Electrical Specifications</h2>}
+        header={<h4>Choose Electrical Specifications</h4>}
         primaryBtn={{ label: "Show suitable cores", onClick: () => {} }}
       >
         <div className="card-items">
           <TextInput
             label="Inductance (H)"
             value={inductance}
+            type="number"
             onChange={setInductance}
-            errorMessage="Inductance cannot be empty"
-            validationFunction={(value: string) => value.length > 0}
+            errorMessage={validator.inductance(inductance) || ''}
+            validationFunction={validator.inductance}
           />
           <TextInput
             label="RMS Current (A)"
             value={rmsCurrent}
+            type="number"
             onChange={setRmsCurrent}
-            errorMessage="RMS Current cannot be empty"
+            errorMessage= {validator.rmsCurrent(rmsCurrent) || ''}
+            validationFunction={validator.rmsCurrent}
           />
           <TextInput
             label="Peak Current (A)"
             value={peakCurrent}
+            type="number"
             onChange={setPeakCurrent}
-            errorMessage="RMS Current cannot be empty"
+            errorMessage={validator.peakCurrent(peakCurrent) || ''}
+            validationFunction={validator.peakCurrent}
           />
           <TextInput
             label="Project Title (Optional)"
             value={projectTitle}
+            type="text"
             onChange={setProjectTitle}
           />
         </div>
       </Card>
-      <Card header={<h2>Winding & Wire Selection</h2>}>
+      <Card header={<h4>Winding & Wire Selection</h4>}>
         <div className="card-items">
           <SliderInput
             label="Winding Factor"
@@ -73,8 +80,8 @@ const InductorDesignForm = () => {
           <Dropdown
             label="Select Wire"
             value={selectedWire?.name ?? ""}
-            onChange={(wire: string) => {
-              setSelectedWire(mapSelectedWire(wire) || wiresList[0]);
+            onChange={(wire: string)=> {
+                setSelectedWire(mapSelectedWire(wire) || wiresList[0]);
             }}
             options={wiresList.map((wire) => ({
               value: wire.name,

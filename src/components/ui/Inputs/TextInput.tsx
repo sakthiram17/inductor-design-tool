@@ -6,9 +6,10 @@ type TextInputProps = {
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
-  validationFunction?: (value: string) => boolean;
+  validationFunction?: (value: string) => string | null;
   errorMessage?: string;
   placeholder?: string;
+  type?: string;
 };
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -19,6 +20,7 @@ const TextInput: React.FC<TextInputProps> = ({
   validationFunction,
   errorMessage = "",
   placeholder,
+  type = "text",
 }) => {
   const [isTouched, setIsTouched] = useState(false);
 
@@ -31,7 +33,7 @@ const TextInput: React.FC<TextInputProps> = ({
     <div className="text-input-container">
       {label && <label className="text-input-label">{label}</label>}
       <input
-        type="text"
+        type={type}
         value={value}
         onChange={handleChange}
         disabled={disabled}
@@ -40,7 +42,7 @@ const TextInput: React.FC<TextInputProps> = ({
       />
       <div
         className={`text-input-error ${
-          isTouched && validationFunction && !validationFunction(value)
+          isTouched && validationFunction && validationFunction(value)
             ? "show"
             : ""
         }`}
