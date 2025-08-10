@@ -73,97 +73,99 @@ const InductorDesignForm = () => {
       Number(peakCurrent)
     );
     if (setAreaProduct) setAreaProduct(Ap);
-    const suitableCores = coreList.filter((core) => core.areaProduct >= Ap);
+    const suitableCores = coreList.filter((core) => core.areaProduct >= convertToMM4(Ap));
     setPossibleCores(suitableCores);
   };
 
   return (
-    <div className="inductor-design-form">
-      <Card
-        header={<h4>Choose Electrical Specifications</h4>}
-        primaryBtn={{
-          label: "Show suitable cores",
-          disabled: !isValid,
-          onClick: coresSelector,
-        }}
-      >
-        <div className="card-items">
-          <TextInput
-            label="Inductance (µH)"
-            value={inductance}
-            type="number"
-            onChange={setInductance}
-            errorMessage={validator.inductance(inductance) || ""}
-            validationFunction={validator.inductance}
-          />
-          <TextInput
-            label="RMS Current (A)"
-            value={rmsCurrent}
-            type="number"
-            onChange={setRmsCurrent}
-            errorMessage={validator.rmsCurrent(rmsCurrent) || ""}
-            validationFunction={validator.rmsCurrent}
-          />
-          <TextInput
-            label="Peak Current (A)"
-            value={peakCurrent}
-            type="number"
-            onChange={setPeakCurrent}
-            errorMessage={validator.peakCurrent(peakCurrent) || ""}
-            validationFunction={validator.peakCurrent}
-          />
-          <TextInput
-            label="Project Title (Optional)"
-            value={projectTitle}
-            type="text"
-            onChange={setProjectTitle}
-          />
-        </div>
-        {areaProduct && (
-          <p>
-            <>
-              <b>Area Product :</b>{" "}
-              {convertToMM4(
-                calculateAreaProduct(
-                  Number(inductance),
-                  Number(rmsCurrent),
-                  Number(peakCurrent)
+    <div className="inductor-design-root">
+      <div className="inductor-design-form">
+        <Card
+          header={<h4>Choose Electrical Specifications</h4>}
+          primaryBtn={{
+            label: "Show suitable cores",
+            disabled: !isValid,
+            onClick: coresSelector,
+          }}
+        >
+          <div className="card-items">
+            <TextInput
+              label="Inductance (µH)"
+              value={inductance}
+              type="number"
+              onChange={setInductance}
+              errorMessage={validator.inductance(inductance) || ""}
+              validationFunction={validator.inductance}
+            />
+            <TextInput
+              label="RMS Current (A)"
+              value={rmsCurrent}
+              type="number"
+              onChange={setRmsCurrent}
+              errorMessage={validator.rmsCurrent(rmsCurrent) || ""}
+              validationFunction={validator.rmsCurrent}
+            />
+            <TextInput
+              label="Peak Current (A)"
+              value={peakCurrent}
+              type="number"
+              onChange={setPeakCurrent}
+              errorMessage={validator.peakCurrent(peakCurrent) || ""}
+              validationFunction={validator.peakCurrent}
+            />
+            <TextInput
+              label="Project Title (Optional)"
+              value={projectTitle}
+              type="text"
+              onChange={setProjectTitle}
+            />
+          </div>
+          {areaProduct && (
+            <p>
+              <>
+                <b>Area Product :</b>{" "}
+                {convertToMM4(
+                  calculateAreaProduct(
+                    Number(inductance),
+                    Number(rmsCurrent),
+                    Number(peakCurrent)
+                  )
+                )}
+              </>
+              mm<sup>4</sup>
+            </p>
+          )}
+        </Card>
+        <Card header={<h4>Winding & Wire Selection</h4>}>
+          <div className="card-items">
+            <SliderInput
+              label="Winding Factor"
+              value={windingFactor}
+              onChange={setWindingFactor}
+              min={0}
+              max={1}
+              showMinMax={true}
+              step={0.05}
+            />
+            <Dropdown
+              label="Select Wire"
+              value={selectedWire?.name ?? ""}
+              onChange={(wire: string) => {
+                setSelectedWire(mapSelectedWire(wire) || wiresList[0]);
+              }}
+              options={wiresList
+                .filter((wire) =>
+                  rmsCurrent ? wire.Current >= Number(rmsCurrent) : true
                 )
-              )}
-            </>
-            mm<sup>4</sup>
-          </p>
-        )}
-      </Card>
-      <Card header={<h4>Winding & Wire Selection</h4>}>
-        <div className="card-items">
-          <SliderInput
-            label="Winding Factor"
-            value={windingFactor}
-            onChange={setWindingFactor}
-            min={0}
-            max={1}
-            showMinMax={true}
-            step={0.05}
-          />
-          <Dropdown
-            label="Select Wire"
-            value={selectedWire?.name ?? ""}
-            onChange={(wire: string) => {
-              setSelectedWire(mapSelectedWire(wire) || wiresList[0]);
-            }}
-            options={wiresList
-              .filter((wire) =>
-                rmsCurrent ? wire.Current >= Number(rmsCurrent) : true
-              )
-              .map((wire) => ({
-                value: wire.name,
-                label: `${wire.name} : ${wire.Current} A`,
-              }))}
-            placeholder="Choose a wire..."
-          />
-        </div>
-      </Card>
+                .map((wire) => ({
+                  value: wire.name,
+                  label: `${wire.name} : ${wire.Current} A`,
+                }))}
+              placeholder="Choose a wire..."
+            />
+          </div>
+        </Card>
+      </div>
       <DesignCard possibleCores={possibleCores} />
     </div>
   );
