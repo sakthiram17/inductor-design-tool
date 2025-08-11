@@ -1,0 +1,106 @@
+* {
+  box-sizing: border-box;
+}
+
+.SideBar {
+  font-size: 1.25rem; /* 20px → 1.25rem */
+  font-weight: bold;
+  height: 100%;
+  background-color: var(--color-dark-purple);
+  color: var(--text-inverted);
+  width: fit-content;
+  z-index: 1000;
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: 0;
+  margin: 0;
+  opacity: 1;
+  transition: transform 0.15s;
+}
+
+.close {
+  transform: translateX(-60vw);
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.SideBar ul {
+  text-decoration: none;
+  margin: 0;
+  width: 50vw;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center; /* fixed invalid "middle" */
+  list-style: none;
+  flex-direction: column;
+  padding: 0;
+  text-align: center;
+}
+
+.SideBarElement {
+  text-decoration: none;
+  padding: 1.25rem; /* 20px → 1.25rem */
+  width: 100%;
+  display: flex;
+  color: var(--text-inverted);
+  transition: 0.15s;
+  text-align: center;
+  justify-content: center;
+  height: 10%;
+}
+
+.SideBarElement:hover,
+.SideBar:focus {
+  color: var(--color-orchid-pink);
+}
+
+.SideBarElementAlt {
+  text-decoration: none;
+  padding: 1.25rem;
+  width: 100%;
+  display: flex;
+  color: var(--color-moss-green);
+  transition: 0.15s;
+  text-align: center;
+  justify-content: center;
+  height: 10%;
+  border: 0.125rem solid var(--color-moss-green); /* 2px → 0.125rem */
+  border-radius: 0.3rem;
+}
+
+.SideBarElementAlt:hover,
+.SideBarAlt:focus {
+  color: var(--color-orchid-pink);
+}
+
+.Active1 {
+  color: var(--color-orchid-pink);
+}
+
+.SideBar li svg path {
+  color: var(--color-moss-green);
+  transition: 0.15s;
+  text-align: center;
+}
+
+.SideBar li:hover svg path {
+  box-shadow: 0 0 0.1875rem 0.1875rem var(--gray-400); /* 3px → 0.1875rem */
+  opacity: 0.8;
+  transform: scale(1.2);
+}
+
+.close-icon {
+  width: 100%;
+  margin-top: 1rem; /* 10% kept for layout; px → rem */
+  height: 10%;
+  display: flex;
+  justify-content: center;
+}
+
+.center-icon {
+  margin: auto;
+  margin-top: 0.3125rem; /* 5px → 0.3125rem */
+}

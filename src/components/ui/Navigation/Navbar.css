@@ -1,0 +1,157 @@
+.NavBar {
+  font-size: 1rem;
+  color: var(--text-primary);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  margin: 0;
+  background-color: var(--bg-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(8px);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.navbar-header {
+  text-decoration: none;
+  color: var(--text-primary);
+  position: absolute;
+  left: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-header:hover {
+  color: var(--color-cerise);
+}
+
+.small_nav-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: auto;
+}
+
+.NavBar ul {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.NavbarElement {
+  text-decoration: none;
+  padding: 0.5rem 0.8rem;
+  color: var(--text-primary);
+  font-weight: bold;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.NavbarElement:hover,
+.NavbarElement:active {
+  color: var(--color-mardi-gras);
+  transform: translateY(-3px) scale(1.05);
+}
+
+.NavbarElementAlt {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: solid var(--color-mardi-gras) 1px;
+  color: var(--color-mardi-gras);
+  border-radius: 0.5rem;
+  background-color: transparent;
+  transition: all 0.25s ease;
+}
+
+.NavbarElementAlt:hover,
+.NavbarElementAlt:active {
+  background-color: var(--color-mardi-gras);
+  color: var(--text-inverted);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.NavBar button {
+  border: none;
+  color: var(--text-primary);
+  background-color: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.NavBar button:hover {
+  color: var(--color-mardi-gras);
+}
+
+.Active {
+  background-color: var(--color-mardi-gras);
+  color: var(--text-inverted);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.Active:hover {
+  color: var(--text-inverted);
+}
+
+.header-f {
+  color: var(--text-primary);
+}
+
+.header-l {
+  color: var(--color-mardi-gras);
+}
+
+.btn-grp {
+  position: absolute;
+  left: 5%;
+}
+
+.menu-button,
+.OpenMenu {
+  color: var(--color-mardi-gras);
+}
+
+.fa-icon {
+  padding: 0rem 0.4rem 0.2rem 0.4rem;
+}
+
+.NavBar svg path {
+  color: var(--color-mardi-gras);
+}
+
+.App {
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 900px) {
+  .NavBar {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    justify-content: space-between;
+  }
+
+  .navbar-header {
+    position: relative;
+    left: 0;
+  }
+
+  .NavBar ul {
+    gap: 0.5rem;
+  }
+
+  .NavbarElement,
+  .NavbarElementAlt {
+    padding: 0.4rem 0.6rem;
+  }
+}
