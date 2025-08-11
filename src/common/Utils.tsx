@@ -1,6 +1,7 @@
 // Utils.tsx
 
 import Constants from "./Constants";
+import type { Wire } from "./Wires";
 
 /**
  * Calculates the area product (Ap) for an inductor design.
@@ -29,5 +30,43 @@ export function calculateAreaProduct(
 
 export function convertToMM4(ap: number): number {
   // Convert area product from m^4 to mm^4
-  return Math.round(ap * (10 ** 12));
+  return Math.round(ap * 10 ** 12);
+}
+
+export function computeResistance(selectedWire: Wire, length: number): number {
+  // Calculate resistance using the formula R = ρ * (L / A)
+  // where ρ is the resistivity of copper (1.7 * 10^-8 ohm-meters)
+  const area_mm2 = selectedWire.Area; // in mm²
+  const area_m2 = area_mm2 * 1e-6; // convert mm² to m²
+  const resistance = Constants.rho * (length / area_m2); // in ohms
+  return resistance;
+}
+export function calculateTurns(
+  inductance: number, // in µH
+  peakCurrent: number, // in A
+  coreArea: number // in mm²
+): number {
+  // Convert inductance from µH to H
+  const L_H = inductance * 1e-6;
+
+  // Convert core area from mm² to m²
+  const coreArea_m2 = coreArea * 1e-6;
+
+  // N = (L * I_peak) / (B_max * A_core)
+  const turns = (L_H * peakCurrent) / (Constants.flux_density * coreArea_m2);
+
+  return Math.round(turns);
+}
+
+export function checkIfWireFits(
+  selectedWire: Wire | null,
+  turns: number,
+  coreWindowArea: number,
+  winding_factor: number
+): boolean {
+  // Calculate the total area occupied by the wire
+  const totalWireArea =
+    ((selectedWire ? selectedWire?.Area : 0) * turns) / winding_factor; // in mm²
+  // Check if the total wire area fits within the core window area
+  return totalWireArea <= coreWindowArea;
 }

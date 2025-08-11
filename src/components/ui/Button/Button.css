@@ -68,8 +68,6 @@
 }
 
 .btn-disabled {
-  color: var(--text-muted);
-  background-color: var(--bg-light);
   cursor: not-allowed;
   opacity: 0.5;
   border: none;

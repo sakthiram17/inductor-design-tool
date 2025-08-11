@@ -19,7 +19,6 @@ export const validator = {
     if (value === undefined || value === null || value === "") {
       return "RMS current is required.";
     }
-    console.log(maxCurrent,value)
     const num = Number(value);
     if (isNaN(num)) {
       return "RMS current must be a number.";

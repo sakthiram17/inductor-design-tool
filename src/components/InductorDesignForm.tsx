@@ -65,6 +65,14 @@ const InductorDesignForm = () => {
     setIsValid,
   ]);
 
+  useEffect(() => {
+    if (selectedWire && selectedWire.Current >= Number(rmsCurrent)) return;
+    const suitableWires = wiresList
+      .filter((wire) => wire.Current >= Number(rmsCurrent))
+      .sort((a, b) => a.Current - b.Current);
+    setSelectedWire(suitableWires[0] || wiresList[0]);
+  }, [rmsCurrent]);
+
   const coresSelector = () => {
     // This function can be used to filter or select cores based on the design parameters
     const Ap = calculateAreaProduct(
@@ -73,7 +81,9 @@ const InductorDesignForm = () => {
       Number(peakCurrent)
     );
     if (setAreaProduct) setAreaProduct(Ap);
-    const suitableCores = coreList.filter((core) => core.areaProduct >= convertToMM4(Ap));
+    const suitableCores = coreList.filter(
+      (core) => core.areaProduct >= convertToMM4(Ap)
+    );
     setPossibleCores(suitableCores);
   };
 
