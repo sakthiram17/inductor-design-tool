@@ -72,6 +72,9 @@ const InductorDesignForm = () => {
       .sort((a, b) => a.Current - b.Current);
     setSelectedWire(suitableWires[0] || wiresList[0]);
   }, [rmsCurrent]);
+  useEffect(() => {
+    setPossibleCores([]);
+  }, [peakCurrent, rmsCurrent, inductance]);
 
   const coresSelector = () => {
     // This function can be used to filter or select cores based on the design parameters

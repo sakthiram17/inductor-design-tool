@@ -36,9 +36,13 @@ export function convertToMM4(ap: number): number {
 export function computeResistance(selectedWire: Wire, length: number): number {
   // Calculate resistance using the formula R = ρ * (L / A)
   // where ρ is the resistivity of copper (1.7 * 10^-8 ohm-meters)
+  // length is in mm and
+  // area is in mm2
   const area_mm2 = selectedWire.Area; // in mm²
   const area_m2 = area_mm2 * 1e-6; // convert mm² to m²
-  const resistance = Constants.rho * (length / area_m2); // in ohms
+  const length_m = length * 1e-3;
+  const resistance =
+    Constants.rho * (length_m / area_m2) * Constants.convertToMilli; // in ohms
   return resistance;
 }
 export function calculateTurns(
@@ -55,7 +59,7 @@ export function calculateTurns(
   // N = (L * I_peak) / (B_max * A_core)
   const turns = (L_H * peakCurrent) / (Constants.flux_density * coreArea_m2);
 
-  return Math.round(turns);
+  return Math.ceil(turns);
 }
 
 export function checkIfWireFits(
@@ -70,3 +74,4 @@ export function checkIfWireFits(
   // Check if the total wire area fits within the core window area
   return totalWireArea <= coreWindowArea;
 }
+
