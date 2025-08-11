@@ -1,22 +1,29 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 import type { Wire } from "../common/Wires";
 import type { Core } from "../common/CoreData";
 
 type InductorDesignContextType = {
   possibleCores: Core[];
-  setPossibleCores: (cores: Core[]) => void;
+  setPossibleCores: Dispatch<SetStateAction<Core[]>>;
   selectedWire: Wire | null;
-  setSelectedWire: (wire: Wire | null) => void;
+  setSelectedWire: Dispatch<SetStateAction<Wire | null>>;
   inductance: string;
-  setInductance: (v: string) => void;
+  setInductance: Dispatch<SetStateAction<string>>;
   rmsCurrent: string;
-  setRmsCurrent: (v: string) => void;
+  setRmsCurrent: Dispatch<SetStateAction<string>>;
   peakCurrent: string;
-  setPeakCurrent: (v: string) => void;
+  setPeakCurrent: Dispatch<SetStateAction<string>>;
   projectTitle: string;
-  setProjectTitle: (v: string) => void;
+  setProjectTitle: Dispatch<SetStateAction<string>>;
   windingFactor: number;
-  setWindingFactor: (v: number) => void;
+  setWindingFactor: Dispatch<SetStateAction<number>>;
   isValid?: boolean;
   setIsValid?: (v: boolean) => void;
   areaProduct?: number | undefined;

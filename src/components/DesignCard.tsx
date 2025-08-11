@@ -4,33 +4,43 @@ import { type Core } from "../common/CoreData";
 import { Button, ButtonStyle } from "./ui/Button/Button";
 import "./DesignCard.css";
 import {
+  buildDesignFromContext,
   calculateTurns,
   checkIfWireFits,
   computeResistance,
+  exportDesignToExcel,
+  saveDesignToLocal,
 } from "../common/Utils";
 import { useInductorDesign } from "../Context/InductorDesignContext";
 import InfoBubble from "./ui/info-card/InfoBubble";
 import type { Wire } from "../common/Wires";
 interface CoreListProps {
   possibleCores: Core[];
-  onExpandDesign?: (core: Core) => void;
-  onSaveDesign?: (core: Core) => void;
-  onDiscardDesign?: (core: Core) => void;
 }
 
-const CoreList: React.FC<CoreListProps> = ({
-  possibleCores,
-  onExpandDesign,
-  onSaveDesign,
-  onDiscardDesign,
-}) => {
-  const { inductance, peakCurrent, selectedWire, windingFactor } =
-    useInductorDesign();
+const CoreList: React.FC<CoreListProps> = ({ possibleCores }) => {
+  const {
+    inductance,
+    peakCurrent,
+    selectedWire,
+    windingFactor,
+    rmsCurrent,
+    projectTitle,
+    areaProduct,
+    setPossibleCores,
+  } = useInductorDesign();
 
   if (possibleCores.length === 0) {
     return null;
   }
 
+  const deleteDesign = (sku: string) => {
+    setPossibleCores((prev: Core[]): Core[] =>
+      prev.filter(
+        (core) => core.sku.trim().toLowerCase() !== sku.trim().toLowerCase()
+      )
+    );
+  };
   return (
     <>
       {possibleCores.map((core) => {
@@ -106,12 +116,50 @@ const CoreList: React.FC<CoreListProps> = ({
                 <div className="button-group">
                   <Button
                     styleType={ButtonStyle.Primary}
-                    onClick={() => onExpandDesign && onExpandDesign(core)}
+                    onClick={() => {
+                      const design = buildDesignFromContext(
+                        {
+                          projectTitle,
+                          inductance,
+                          rmsCurrent,
+                          peakCurrent,
+                          windingFactor,
+                          areaProduct,
+                          isValid,
+                          selectedWire,
+                        },
+                        core,
+                        turns,
+                        resistance,
+                        powerLoss
+                      );
+                      saveDesignToLocal(design);
+                       deleteDesign(core.sku);
+                    }}
                     label="Save Design"
                   />
                   <Button
                     styleType={ButtonStyle.Secondary}
-                    onClick={() => onSaveDesign && onSaveDesign(core)}
+                    onClick={() => {
+                      const design = buildDesignFromContext(
+                        {
+                          projectTitle,
+                          inductance,
+                          rmsCurrent,
+                          peakCurrent,
+                          windingFactor,
+                          areaProduct,
+                          isValid,
+                          selectedWire,
+                        },
+                        core,
+                        turns,
+                        resistance,
+                        powerLoss
+                      );
+                      exportDesignToExcel(design);
+                      deleteDesign(core.sku);
+                    }}
                     label="Export Design"
                   />
                 </div>
@@ -125,7 +173,7 @@ const CoreList: React.FC<CoreListProps> = ({
                   </p>
                   <Button
                     styleType={ButtonStyle.Danger}
-                    onClick={() => onDiscardDesign && onDiscardDesign(core)}
+                    onClick={() => deleteDesign(core.sku)}
                     label="Discard Design"
                   />
                 </>

@@ -1,7 +1,10 @@
 // Utils.tsx
 
 import Constants from "./Constants";
+import type { Core } from "./CoreData";
+import type { Design } from "./Design";
 import type { Wire } from "./Wires";
+import * as XLSX from "xlsx";
 
 /**
  * Calculates the area product (Ap) for an inductor design.
@@ -75,3 +78,68 @@ export function checkIfWireFits(
   return totalWireArea <= coreWindowArea;
 }
 
+export const exportDesignToExcel = (design: Design) => {
+  const data = [
+    { Label: "Project Title", Value: design.projectTitle },
+    { Label: "Inductance (uH)", Value: design.inductance },
+    { Label: "RMS Current (A)", Value: design.rmsCurrent },
+    { Label: "Peak Current (A)", Value: design.peakCurrent },
+    { Label: "Winding Factor", Value: design.windingFactor },
+    {
+      Label: "Area Product (mm³)",
+      Value: convertToMM4(design.areaProduct || 0) ?? "",
+    },
+    { Label: "Valid Design", Value: design.isValid ? "Yes" : "No" },
+    { Label: "Core SKU", Value: design.core.sku },
+    { Label: "Core Area (mm²)", Value: design.core.coreArea },
+    { Label: "Window Area (mm²)", Value: design.core.windowArea },
+    { Label: "Mean Turn Length (mm)", Value: design.core.meanTurnLength },
+    { Label: "Turns", Value: design.turns },
+    { Label: "DCR (mΩ)", Value: design.resistance.toFixed(2) },
+    {
+      Label: "Wire Length (cm)",
+      Value: (design.core.meanTurnLength * design.turns).toFixed(2),
+    },
+    { Label: "Power Loss (W)", Value: design.powerLoss.toFixed(2) },
+    { Label: "Saved At", Value: design.savedAt },
+  ];
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Design");
+  XLSX.writeFile(wb, `Core_Design_${design.core.sku}.xlsx`);
+};
+
+export const saveDesignToLocal = (design: Design) => {
+  const saved = localStorage.getItem("savedDesigns");
+  let designs: Design[] = saved ? JSON.parse(saved) : [];
+  designs.push(design);
+  localStorage.setItem("savedDesigns", JSON.stringify(designs));
+};
+
+interface ContextParams {
+  projectTitle: string;
+  inductance: string;
+  rmsCurrent: string;
+  peakCurrent: string;
+  windingFactor: number;
+  areaProduct?: number;
+  isValid: boolean;
+  selectedWire: Wire | null;
+}
+
+export function buildDesignFromContext(
+  params: ContextParams,
+  core: Core,
+  turns: number,
+  resistance: number,
+  powerLoss: number
+): Design {
+  return {
+    ...params,
+    core,
+    turns,
+    resistance,
+    powerLoss,
+    savedAt: new Date().toISOString(),
+  };
+}
