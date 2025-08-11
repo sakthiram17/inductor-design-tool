@@ -28,11 +28,21 @@ const CoreList: React.FC<CoreListProps> = ({ possibleCores }) => {
     windingFactor,
     rmsCurrent,
     projectTitle,
+    isValid,
     areaProduct,
     setPossibleCores,
   } = useInductorDesign();
-
   if (possibleCores.length === 0) {
+    if (isValid) {
+      return (
+        <div className="empty-state">
+          <h2 className="empty-title">No Suitable Cores Found</h2>
+          <p className="empty-description">
+            We couldn't find any cores that match your design specifications.
+          </p>
+        </div>
+      );
+    }
     return null;
   }
 

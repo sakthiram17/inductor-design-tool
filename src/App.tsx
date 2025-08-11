@@ -3,6 +3,7 @@ import "./App.css";
 import Navbar from "./components/ui/Navigation/Navbar";
 import SideBar from "./components/ui/Navigation/SideBar";
 import Backdrop from "./components/ui/Navigation/Backdrop";
+import YourDesigns from "./pages/YourDesigns";
 
 import InductorDesign from "./pages/InductorDesign";
 
@@ -30,7 +31,7 @@ function App() {
       case NavigationConstants.CoresAndWires:
         return <InductorDesign />;
       case NavigationConstants.YourDesigns:
-        return <InductorDesign />;
+        return <YourDesigns />;
       default:
         return <InductorDesign />;
     }

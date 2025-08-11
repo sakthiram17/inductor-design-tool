@@ -26,3 +26,19 @@
   text-align: center;
   width: 15rem;
 }
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.empty-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}

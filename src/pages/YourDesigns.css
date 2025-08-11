@@ -1,0 +1,44 @@
+.designs-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* one card per row by default */
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .designs-grid {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(480px, 1fr)
+    ); /* wider cards on larger screens */
+  }
+}
+
+.design-card {
+  background: var(--bg-light, #fff);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  display: flex;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+}
+
+.design-details {
+  display: grid;
+  grid-template-columns: 1fr; /* start with single column */
+  gap: 0.25rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .design-details {
+    grid-template-columns: repeat(2, 1fr); /* max two columns for details */
+  }
+}
+
+.design-actions {
+  margin-top: 1rem;
+  align-items: "stretch";
+}
