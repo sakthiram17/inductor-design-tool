@@ -143,3 +143,19 @@ export function buildDesignFromContext(
     savedAt: new Date().toISOString(),
   };
 }
+
+export function formatIndianNumber(num: number | string): string {
+  const str = num.toString();
+  const [integerPart, decimalPart] = str.split(".");
+
+  // First comma before last 3 digits, then every 2 digits
+  const lastThree = integerPart.slice(-3);
+  const otherNumbers = integerPart.slice(0, -3);
+
+  const formattedInt =
+    otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") +
+    (otherNumbers ? "," : "") +
+    lastThree;
+
+  return decimalPart ? `${formattedInt}.${decimalPart}` : formattedInt;
+}
