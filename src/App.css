@@ -4,6 +4,14 @@
   text-align: center;
   width: 100vw;
 }
+body{
+  margin: 0;
+  padding: 0;
+}
+html {
+  margin: 0;
+  padding: 0;
+}
 :root {
   /* Brand colors */
   --color-dark-purple: #1f0322;
@@ -58,6 +66,10 @@
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
+}
+.page-container {
+  margin-top: 5rem;
+  width: 100%;
 }
 
 @keyframes logo-spin {

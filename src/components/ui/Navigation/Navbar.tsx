@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import type { PageName } from "../../../common/NavigationConstants";
 
 type NavbarProps = {
   off: () => void;
   setSmall: (val: boolean) => void;
   first: string;
   last: string;
-  list: string[];
-  active: string;
-  changePage: (e: React.MouseEvent<HTMLLIElement>) => void;
+  list: PageName[];
+  active: PageName;
+  changePage: (e: PageName) => void;
   expand: () => void;
 };
 
@@ -53,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({
         <li
           key={i}
           className={`NavbarElement ${item === active ? "Active" : ""}`}
-          onClick={changePage}
+          onClick={(e) => changePage(e.currentTarget.textContent as PageName)}
         >
           {item}
         </li>

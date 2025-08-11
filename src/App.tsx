@@ -39,7 +39,7 @@ function App() {
   return (
     <>
       <Navbar
-        setSmall={()=>{}}
+        setSmall={() => {}}
         first="Magnetrix"
         last="io"
         list={NavigationList}
@@ -50,7 +50,7 @@ function App() {
       />
 
       <SideBar
-      setSmall={()=>{}}
+        setSmall={() => {}}
         list={NavigationList}
         active={pageName}
         changePage={(page: PageName) => {
@@ -63,7 +63,7 @@ function App() {
 
       <Backdrop on={isSideBarOpen} off={offSideBar} />
 
-      {renderPage()}
+      <div className="page-container">{renderPage()}</div>
     </>
   );
 }

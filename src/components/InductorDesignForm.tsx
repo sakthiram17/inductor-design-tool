@@ -8,8 +8,13 @@ import { useInductorDesign } from "../Context/InductorDesignContext";
 import { validator } from "../common/Validators";
 import { useEffect } from "react";
 import { coreList } from "../common/CoreData";
-import { calculateAreaProduct, convertToMM4 } from "../common/Utils";
+import {
+  calculateAreaProduct,
+  convertToMM4,
+  formatIndianNumber,
+} from "../common/Utils";
 import DesignCard from "./DesignCard";
+import InfoBubble from "./ui/info-card/InfoBubble";
 
 const InductorDesignForm = () => {
   const {
@@ -29,7 +34,6 @@ const InductorDesignForm = () => {
     isValid,
     setPossibleCores,
     possibleCores,
-    areaProduct,
     setAreaProduct,
   } = useInductorDesign();
 
@@ -94,9 +98,9 @@ const InductorDesignForm = () => {
     <div className="inductor-design-root">
       <div className="inductor-design-form">
         <Card
-          header={<h4>Choose Electrical Specifications</h4>}
+          header={<p>Choose Electrical Specifications</p>}
           primaryBtn={{
-            label: "Show suitable cores",
+            label: "Compute suitable cores",
             disabled: !isValid,
             onClick: coresSelector,
           }}
@@ -132,24 +136,22 @@ const InductorDesignForm = () => {
               type="text"
               onChange={setProjectTitle}
             />
-          </div>
-          {areaProduct && (
-            <p>
-              <>
-                <b>Area Product :</b>{" "}
-                {convertToMM4(
+            <InfoBubble
+              label="Area Product"
+              value={formatIndianNumber(
+                convertToMM4(
                   calculateAreaProduct(
                     Number(inductance),
                     Number(rmsCurrent),
                     Number(peakCurrent)
                   )
-                )}
-              </>
-              mm<sup>4</sup>
-            </p>
-          )}
+                )
+              )}
+              unit="mm⁴"
+            />
+          </div>
         </Card>
-        <Card header={<h4>Winding & Wire Selection</h4>}>
+        <Card header={<p>Winding & Wire Selection</p>}>
           <div className="card-items">
             <SliderInput
               label="Winding Factor"

@@ -2,11 +2,12 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import "./SideBar.css";
+import type { PageName } from "../../../common/NavigationConstants";
 
 interface SideBarProps {
-  list: string[];
-  active: string;
-  changePage: (page: string) => void;
+  list: PageName[];
+  active: PageName;
+  changePage: (page: PageName) => void;
   disabled?: boolean;
   off: () => void;
 }
@@ -30,7 +31,7 @@ const SideBar: React.FC<SideBarProps> = ({
           <li
             key={item}
             className={`SideBarElement ${item === active ? "Active1" : ""}`}
-            onClick={() => changePage(item)}
+            onClick={(e) => changePage(e.currentTarget.textContent as PageName)}
           >
             {item}
           </li>
