@@ -6,6 +6,7 @@ import Backdrop from "./components/ui/Navigation/Backdrop";
 import YourDesigns from "./pages/YourDesigns";
 
 import InductorDesign from "./pages/InductorDesign";
+import TransformerDesign from "./pages/TransformerDesign";
 
 import {
   NavigationConstants,
@@ -27,7 +28,7 @@ function App() {
       case NavigationConstants.InductorDesign:
         return <InductorDesign />;
       case NavigationConstants.TransformerDesign:
-        return <InductorDesign />;
+        return <TransformerDesign />;
       case NavigationConstants.CoresAndWires:
         return <InductorDesign />;
       case NavigationConstants.YourDesigns:

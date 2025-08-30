@@ -15,6 +15,13 @@ export const coreList: Core[] = [
     meanTurnLength: 53,
   },
   {
+    sku:"ETD-30/15/7",
+    coreArea: 60,
+    windowArea: 90,
+    areaProduct: 5400,
+    meanTurnLength: 57,
+  },
+  {
     sku: "ETD 34/17/11",
     coreArea: 97.1,
     windowArea: 123,

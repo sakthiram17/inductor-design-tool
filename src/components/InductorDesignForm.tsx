@@ -56,7 +56,8 @@ const InductorDesignForm = () => {
           calculateAreaProduct(
             Number(inductance),
             Number(rmsCurrent),
-            Number(peakCurrent)
+            Number(peakCurrent),
+            windingFactor
           )
         );
     }
@@ -85,7 +86,8 @@ const InductorDesignForm = () => {
     const Ap = calculateAreaProduct(
       Number(inductance),
       Number(rmsCurrent),
-      Number(peakCurrent)
+      Number(peakCurrent),
+      windingFactor
     );
     if (setAreaProduct) setAreaProduct(Ap);
     const suitableCores = coreList.filter(
@@ -143,7 +145,8 @@ const InductorDesignForm = () => {
                   calculateAreaProduct(
                     Number(inductance),
                     Number(rmsCurrent),
-                    Number(peakCurrent)
+                    Number(peakCurrent),
+                    windingFactor
                   )
                 )
               )}

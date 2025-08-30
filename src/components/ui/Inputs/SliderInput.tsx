@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./SliderInput.css";
+import InfoBubble from "../info-card/InfoBubble";
 
 type SliderInputProps = {
   label?: string;
@@ -13,6 +14,7 @@ type SliderInputProps = {
   showValue?: boolean;
   validationFunction?: (value: number) => string | null;
   errorMessage?: string;
+  defaultValue?: number;
 };
 
 const SliderInput: React.FC<SliderInputProps> = ({
@@ -27,6 +29,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
   showValue = true,
   errorMessage = "",
   validationFunction,
+  defaultValue,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(Number(e.target.value));
@@ -44,16 +47,14 @@ const SliderInput: React.FC<SliderInputProps> = ({
           max={max}
           step={step}
           value={value}
+          defaultValue={defaultValue}
           onChange={handleChange}
           disabled={disabled}
           className="slider-input-range"
         />
         {showMinMax && <div className="slider-max">{max}</div>}
       </div>
-      <div className="slider-label-container">
-        {label && <label className="slider-input-label">{label}</label>}
-        {showValue && <span className="slider-input-value">{value}</span>}
-      </div>
+      <InfoBubble label={label || ""} value={showValue ? value : undefined} />
       <div
         className={`slider-input-error ${
           isTouched && validationFunction && validationFunction(value)

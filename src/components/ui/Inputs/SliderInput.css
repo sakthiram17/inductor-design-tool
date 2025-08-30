@@ -5,21 +5,34 @@
   flex-direction: column;
   gap: 0.8rem;
   justify-content: center;
-  height: 1.6rem;
-  align-items: center;
+  /* Remove fixed height to allow content to flow naturally */
+  /* height: 1.6rem; */
+  align-items: stretch; /* full width */
+  width: 100%;
 }
 
 .slider-input-label {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.4rem; /* reduced bottom margin for tighter spacing */
   font-size: 1rem;
   color: var(--text-primary);
   font-weight: bold;
+  /* Make label take full width so aligned nicely */
+  width: 100%;
 }
 
 .slider-input-range {
   width: 100%;
   accent-color: var(--color-mardi-gras);
-  height: 1rem;
+  height: 1.5rem; /* consistent height */
+  background: var(--gray-500);
+  border-radius: 0.25rem;
+  outline: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.slider-input-range:hover:not(:disabled) {
+  opacity: 1;
 }
 
 .slider-input-range:disabled {
@@ -27,31 +40,21 @@
   cursor: not-allowed;
 }
 
-.slider-input-value {
-  font-size: 1rem;
-  color: var(--text-primary);
-  text-align: right;
-}
-
-.slider-input-range {
+.slider-label-container {
+  display: flex;
+  justify-content: space-between; /* use space-between to spread min/max labels */
   width: 100%;
-  height: 1.5rem;
-  background: var(--gray-500);
-  border-radius: 0.25rem;
-  outline: none;
-}
-
-.slider-input-range:hover {
-  opacity: 1;
+  padding: 0 0.25rem; /* small horizontal padding */
 }
 
 .slider-min,
 .slider-max {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
   width: 2rem;
-  font-weight: bold;
+  font-weight: 600;
   text-align: center;
+  user-select: none;
 }
 
 .slider-input {
@@ -59,7 +62,18 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
 }
+
+.slider-input-value {
+  font-size: 1rem;
+  color: var(--text-primary);
+  text-align: right;
+  min-width: 3rem; /* consistent width */
+  user-select: none;
+}
+
 .slider-input-error {
   color: var(--error);
   font-size: 0.85rem;
@@ -77,9 +91,4 @@
   opacity: 1;
   transform: scale(1.05);
   pointer-events: auto;
-}
-.slider-label-container {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
 }

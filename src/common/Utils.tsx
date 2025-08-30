@@ -18,7 +18,8 @@ import * as XLSX from "xlsx";
 export function calculateAreaProduct(
   L: number, // inductance in µH
   I_peak: number, // peak current in A
-  I_rms: number // rms current in A
+  I_rms: number, // rms current in A
+  windingFactor: number = Constants.winding_factor
 ): number {
   // Convert inductance from µH to H
   const inductance_H = L * 1e-6;
@@ -26,7 +27,7 @@ export function calculateAreaProduct(
   const Ap =
     (inductance_H * I_peak * I_rms) /
     (Constants.flux_density *
-      Constants.winding_factor *
+      windingFactor *
       Constants.current_desnity);
   return Ap;
 }
@@ -158,4 +159,66 @@ export function formatIndianNumber(num: number | string): string {
     lastThree;
 
   return decimalPart ? `${formattedInt}.${decimalPart}` : formattedInt;
+}
+/**
+ * Calculate turns for each winding of transformer
+ * For simplicity, assumes voltage per winding and uses:
+ * N = V / (4.44 * f * Bpk * Ac)
+ * Using core area Ac and frequency f.
+ * Here, Bpk is assumed fixed or can be passed (hardcoded ferrite).
+ * 
+ * rmsCurrents and voltages arrays should be same length.
+ */
+export function calculateTransformerTurns(
+  rmsCurrents: string[],
+  voltages: string[],
+  windingFactor: number,
+  coreAreaStr: string | number,
+  frequencyStr: string | number
+): number[] {
+  const Ac = Number(coreAreaStr);
+  const f = Number(frequencyStr);
+  if (isNaN(Ac) || Ac <= 0 || isNaN(f) || f <= 0) return [];
+
+  const Bpk = 0.3; // Tesla, example fixed ferrite value (change if needed)
+  const kf = windingFactor;
+
+  return voltages.map((Vstr, i) => {
+    const V = Number(Vstr);
+    if (isNaN(V) || V <= 0) return 0;
+
+    // Turns formula: N = V / (4.44 * f * Bpk * Ac * kf)
+    // Adjusted by winding factor to account for fill factor
+    const N = V / (4.44 * f * Bpk * Ac * kf);
+    return Math.ceil(N);
+  });
+}
+
+/**
+ * Check if the selected wires fit in the core window area with given winding factor.
+ * For transformers, wires is array, turns is array for each winding.
+ * windowArea is in mm², windingFactor between 0 and 1.
+ * 
+ * Simplistic approach: sum of (wire cross sectional area * turns) should
+ * be less than windowArea * windingFactor.
+ */
+export function checkIfTransformerWireFits(
+  wires: Wire[] | null,
+  turns: number[],
+  windowArea: number,
+  windingFactor: number
+): boolean {
+  if (!wires || wires.length === 0 || turns.length === 0) return false;
+  if (wires.length !== turns.length) return false;
+
+  // Total copper area required = sum(turns * wire CSA)
+  const totalWireArea = turns.reduce((acc, t, idx) => {
+    const wireCSA = wires[idx]?.Area ?? 0; // mm²
+    return acc + t * wireCSA;
+  }, 0);
+
+  // Compare with available window copper area after winding factor
+  const availableArea = windowArea * windingFactor;
+
+  return totalWireArea <= availableArea;
 }
