@@ -7,7 +7,7 @@ import wiresList, { type Wire } from "../common/Wires";
 import { useTransformerDesign } from "../Context/TransformerDesignContext";
 import { validator } from "../common/Validators";
 import { coreList } from "../common/CoreData";
-import { formatIndianNumber } from "../common/Utils";
+import { calculateTransformerAreaProduct, formatIndianNumber } from "../common/Utils";
 import TransformerDesignCard from "./TransformerDesignCard";
 import InfoBubble from "./ui/info-card/InfoBubble";
 import "./InductorDesignForm.css";
@@ -55,11 +55,12 @@ const TransformerDesignForm = () => {
 
     if (valid) {
       // Approximate area product calc for transformers: sum(V*I)
-      const Ap =
-        rmsCurrents.reduce((acc, curr, idx) => {
-          const v = Number(voltages[idx]);
-          return acc + v * Number(curr);
-        }, 0) || 0;
+      const Ap = calculateTransformerAreaProduct(
+        voltages.map(Number),
+        Math.max(...rmsCurrents.map(Number)),
+        Number(frequency),
+        windingFactor
+      );
       setAreaProduct && setAreaProduct(Ap);
     }
   }, [
@@ -74,16 +75,19 @@ const TransformerDesignForm = () => {
 
   // Auto select wires if rmsCurrent changes
   useEffect(() => {
-    // If wires not matching current count, reset
+    // Always select the smallest suitable wire for each winding
     if (!selectedWire || selectedWire.length !== rmsCurrents.length) {
       const suitableWires = rmsCurrents.map((curr) => {
         const c = Number(curr);
-        const wire = wiresList.find((w) => w.Current >= c) || wiresList[0];
+        // Find the smallest wire that meets the current requirement
+        const wire = wiresList
+          .filter((w) => w.Current >= c)
+          .sort((a, b) => a.Area - b.Area)[0] || wiresList[wiresList.length - 1];
         return wire;
       });
       setSelectedWire(suitableWires);
     }
-  }, [rmsCurrents]);
+  }, [rmsCurrents, wiresList]);
 
   // Reset possible cores if inputs change
   useEffect(() => {

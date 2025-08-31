@@ -60,11 +60,10 @@ const TransformerDesignCard: React.FC<TransformerDesignCardProps> = ({
   return (
     <AnimatePresence>
       {possibleCores.map((core) => {
-        // Use your transformer-specific turns calculation
+        // Use first voltage value for turns calculation
         const turns = calculateTransformerTurns(
           rmsCurrents,
-          voltages,
-          windingFactor,
+          Number(voltages[0]),
           core.coreArea,
           frequency
         );
@@ -73,7 +72,7 @@ const TransformerDesignCard: React.FC<TransformerDesignCardProps> = ({
           selectedWire,
           turns,
           core.windowArea,
-          windingFactor
+          Number(windingFactor)
         );
 
         // Calculate total wire length: sum(turns per winding * meanTurnLength)
@@ -96,6 +95,11 @@ const TransformerDesignCard: React.FC<TransformerDesignCardProps> = ({
         // Power loss based on total resistance and max rms current (approx)
         const maxRmsCurrent = Math.max(...rmsCurrents.map(Number));
         const powerLoss = (maxRmsCurrent ** 2 * totalResistance) / 1000;
+
+        // Sum all turns for buildDesignFromContext
+        const totalTurns = Array.isArray(turns)
+          ? turns.reduce((a, b) => a + b, 0)
+          : turns;
 
         return (
           <motion.div
@@ -169,17 +173,19 @@ const TransformerDesignCard: React.FC<TransformerDesignCardProps> = ({
                       onClick={() => {
                         const design = buildDesignFromContext(
                           {
-                            rmsCurrents,
-                            voltages,
+                            inductance: "0",
+                            peakCurrent: "0",
+                            rmsCurrent: rmsCurrents[0],
                             windingFactor,
-                            selectedWire,
+                            selectedWire: Array.isArray(selectedWire)
+                              ? selectedWire[0]
+                              : selectedWire,
                             projectTitle,
-                            isValid,
+                            isValid: !!isValid,
                             areaProduct,
-                            frequency,
                           },
                           core,
-                          turns,
+                          totalTurns,
                           totalResistance,
                           powerLoss
                         );
@@ -193,17 +199,19 @@ const TransformerDesignCard: React.FC<TransformerDesignCardProps> = ({
                       onClick={() => {
                         const design = buildDesignFromContext(
                           {
-                            rmsCurrents,
-                            voltages,
+                            inductance: "0",
+                            peakCurrent: "0",
+                            rmsCurrent: rmsCurrents[0],
                             windingFactor,
-                            selectedWire,
+                            selectedWire: Array.isArray(selectedWire)
+                              ? selectedWire[0]
+                              : selectedWire,
                             projectTitle,
-                            isValid,
+                            isValid: !!isValid,
                             areaProduct,
-                            frequency,
                           },
                           core,
-                          turns,
+                          totalTurns,
                           totalResistance,
                           powerLoss
                         );

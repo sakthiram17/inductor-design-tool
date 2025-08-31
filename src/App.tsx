@@ -6,7 +6,6 @@ import Backdrop from "./components/ui/Navigation/Backdrop";
 import YourDesigns from "./pages/YourDesigns";
 
 import InductorDesign from "./pages/InductorDesign";
-import TransformerDesign from "./pages/TransformerDesign";
 
 import {
   NavigationConstants,
@@ -14,6 +13,7 @@ import {
   type PageName,
 } from "./common/NavigationConstants";
 import CoresAndWires from "./pages/CoresAndWires";
+import ComingSoon from "./pages/ComingSoon";
 
 function App() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -29,7 +29,7 @@ function App() {
       case NavigationConstants.InductorDesign:
         return <InductorDesign />;
       case NavigationConstants.TransformerDesign:
-        return <TransformerDesign />;
+        return <ComingSoon />;
       case NavigationConstants.CoresAndWires:
         return <CoresAndWires/>
       case NavigationConstants.YourDesigns:

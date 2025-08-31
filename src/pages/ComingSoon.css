@@ -1,0 +1,25 @@
+.coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  max-width: 600px;
+  margin: auto;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 2rem;
+}
+.coming-soon h1 {
+  color: var(--color-mardi-gras, #8a1c7c);
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.coming-soon p {
+  color: var(--text-secondary, #4a4a4a);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+.soon-graphic {
+  margin-top: 1rem;
+}

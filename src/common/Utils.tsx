@@ -173,23 +173,27 @@ export function calculateTransformerTurns(
   voltages: string[],
   windingFactor: number,
   coreAreaStr: string | number,
-  frequencyStr: string | number
+  frequencyStr: string | number,
+  Bpk: number = 0.3 // Tesla, default value
 ): number[] {
   const Ac = Number(coreAreaStr);
   const f = Number(frequencyStr);
+  // Clamp winding factor to reasonable range
+  const kf = Math.max(0.1, Math.min(windingFactor, 1));
   if (isNaN(Ac) || Ac <= 0 || isNaN(f) || f <= 0) return [];
 
-  const Bpk = 0.3; // Tesla, example fixed ferrite value (change if needed)
-  const kf = windingFactor;
-
-  return voltages.map((Vstr) => {
+  return voltages.map((Vstr, idx) => {
     const V = Number(Vstr);
     if (isNaN(V) || V <= 0) return 0;
 
     // Turns formula: N = V / (4.44 * f * Bpk * Ac * kf)
-    // Adjusted by winding factor to account for fill factor
-    const N = V / (4.44 * f * Bpk * Ac * kf);
-    return Math.ceil(N);
+    const denominator = 4.44 * f * Bpk * Ac * kf;
+    const N = V / denominator;
+    console.log(`Winding ${idx + 1}: V=${V}, f=${f}, Bpk=${Bpk}, Ac=${Ac}, kf=${kf}, N(raw)=${N}`);
+    if (N < 1) {
+      console.warn(`Calculated turns for winding ${idx + 1} is less than 1. Check your input values.`);
+    }
+    return Math.max(1, Math.ceil(N));
   });
 }
 
@@ -212,12 +216,39 @@ export function checkIfTransformerWireFits(
 
   // Total copper area required = sum(turns * wire CSA)
   const totalWireArea = turns.reduce((acc, t, idx) => {
+    console.log(turns)
     const wireCSA = wires[idx]?.Area ?? 0; // mm²
+    console.log(`Winding ${idx + 1}: Turns=${t}, Wire CSA=${wireCSA} mm²`);
     return acc + t * wireCSA;
   }, 0);
-
+  console.log("Total Wire Area (mm²):", totalWireArea);
   // Compare with available window copper area after winding factor
   const availableArea = windowArea * windingFactor;
 
   return totalWireArea <= availableArea;
+}
+
+/**
+ * Calculates the area product (Ap) for a transformer design.
+ * Ap = (Sum of winding voltages * Max RMS current) / (4.44 * frequency * Bpk * current density * winding factor)
+ * @param voltages Array of winding voltages (V)
+ * @param maxRmsCurrent Maximum RMS current among windings (A)
+ * @param frequency Operating frequency (Hz)
+ * @param Bpk Peak flux density (Tesla)
+ * @param currentDensity Current density (A/mm²)
+ * @param windingFactor Winding fill factor (0 < windingFactor <= 1)
+ * @returns Area product (Ap) in mm^4
+ */
+export function calculateTransformerAreaProduct(
+  voltages: number[],
+  maxRmsCurrent: number,
+  frequency: number,
+  windingFactor: number = 0.4
+): number {
+  const totalVoltage = voltages.reduce((sum, v) => sum + v, 0);
+  const denominator = 4.44 * frequency * Constants.flux_density * Constants.current_desnity * windingFactor;
+  if (denominator === 0) return 0;
+  // Result in m^4, convert to mm^4
+  const Ap_m4 = (totalVoltage * maxRmsCurrent) / denominator;
+  return Math.ceil(convertToMM4(Ap_m4));
 }

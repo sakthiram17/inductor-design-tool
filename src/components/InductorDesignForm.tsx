@@ -160,7 +160,7 @@ const InductorDesignForm = () => {
               label="Winding Factor"
               value={windingFactor}
               onChange={setWindingFactor}
-              min={0}
+              min={0.1}
               max={1}
               showMinMax={true}
               step={0.05}
