@@ -3,6 +3,7 @@ const Constants = {
   current_desnity: 3 * 10 ** 6,
   rho: 1.7 * 10 ** -8,
   winding_factor: 0.3,
-  convertToMilli: 1000
+  convertToMilli: 1000,
+  saveName:'YOUR_DESIGNS'
 };
 export default Constants;

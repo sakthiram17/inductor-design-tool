@@ -13,6 +13,7 @@ import {
   NavigationList,
   type PageName,
 } from "./common/NavigationConstants";
+import CoresAndWires from "./pages/CoresAndWires";
 
 function App() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -30,7 +31,7 @@ function App() {
       case NavigationConstants.TransformerDesign:
         return <TransformerDesign />;
       case NavigationConstants.CoresAndWires:
-        return <InductorDesign />;
+        return <CoresAndWires/>
       case NavigationConstants.YourDesigns:
         return <YourDesigns />;
       default:
@@ -52,7 +53,6 @@ function App() {
       />
 
       <SideBar
-        setSmall={() => {}}
         list={NavigationList}
         active={pageName}
         changePage={(page: PageName) => {

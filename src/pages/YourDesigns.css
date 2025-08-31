@@ -13,19 +13,22 @@
       minmax(480px, 1fr)
     ); /* wider cards on larger screens */
   }
+  .design-card {
+    max-width: 60vw;
+  }
 }
 
 .design-card {
   background: var(--bg-light, #fff);
   border-radius: 0.75rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   display: flex;
   margin-right: 1rem;
   margin-left: 1rem;
   flex-direction: column;
-  max-width: 600px;
-  margin: auto;
+  margin:auto;
+  margin-bottom: 1rem;
 }
 
 .design-details {

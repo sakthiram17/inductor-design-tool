@@ -111,10 +111,10 @@ export const exportDesignToExcel = (design: Design) => {
 };
 
 export const saveDesignToLocal = (design: Design) => {
-  const saved = localStorage.getItem("savedDesigns");
+  const saved = localStorage.getItem(Constants.saveName);
   let designs: Design[] = saved ? JSON.parse(saved) : [];
   designs.push(design);
-  localStorage.setItem("savedDesigns", JSON.stringify(designs));
+  localStorage.setItem(Constants.saveName, JSON.stringify(designs));
 };
 
 interface ContextParams {

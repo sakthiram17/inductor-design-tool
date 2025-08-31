@@ -5,6 +5,7 @@ import "./YourDesigns.css";
 import Button, { ButtonStyle } from "../components/ui/Button/Button";
 import { convertToMM4, formatIndianNumber } from "../common/Utils";
 import { AnimatePresence, motion } from "framer-motion";
+import Constants from "../common/Constants";
 
 const YourDesigns: React.FC = () => {
   const [designs, setDesigns] = useState<Design[]>([]);
@@ -14,7 +15,7 @@ const YourDesigns: React.FC = () => {
   }, []);
 
   const loadDesigns = () => {
-    const stored = localStorage.getItem("savedDesigns");
+    const stored = localStorage.getItem(Constants.saveName);
     if (stored) {
       try {
         setDesigns(JSON.parse(stored) as Design[]);
@@ -28,7 +29,7 @@ const YourDesigns: React.FC = () => {
 
   const deleteDesign = (index: number) => {
     const updated = designs.filter((_, i) => i !== index);
-    localStorage.setItem("designs", JSON.stringify(updated));
+    localStorage.setItem(Constants.saveName, JSON.stringify(updated));
     setDesigns(updated);
   };
 
@@ -50,7 +51,7 @@ const YourDesigns: React.FC = () => {
               >
                 <div key={idx} className="design-card">
                   <div className="design-header">
-                    <h2>{d.projectTitle}</h2>
+                    <h2>{d.projectTitle || "Unnamed Design"}</h2>
                   </div>
 
                   <div className="design-details">
