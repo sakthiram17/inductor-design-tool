@@ -170,7 +170,6 @@ export function formatIndianNumber(num: number | string): string {
  * rmsCurrents and voltages arrays should be same length.
  */
 export function calculateTransformerTurns(
-  rmsCurrents: string[],
   voltages: string[],
   windingFactor: number,
   coreAreaStr: string | number,
@@ -183,7 +182,7 @@ export function calculateTransformerTurns(
   const Bpk = 0.3; // Tesla, example fixed ferrite value (change if needed)
   const kf = windingFactor;
 
-  return voltages.map((Vstr, i) => {
+  return voltages.map((Vstr) => {
     const V = Number(Vstr);
     if (isNaN(V) || V <= 0) return 0;
 
